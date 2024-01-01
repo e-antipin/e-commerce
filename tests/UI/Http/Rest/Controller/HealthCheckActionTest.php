@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Http\Rest\Controller;
+namespace Tests\UI\Http\Rest\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
