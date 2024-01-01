@@ -13,3 +13,7 @@ make down
 make bash
 ```
 
+## Tests
+```bash
+make docker-php-test
+```

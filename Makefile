@@ -30,3 +30,6 @@ docker-close-all:
 
 docker-network-stop:
 	docker network prune
+
+docker-php-test:
+	docker-compose exec --user=php php php bin/phpunit
