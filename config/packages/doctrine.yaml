@@ -1,16 +1,19 @@
 doctrine:
     dbal:
-        url: '%env(resolve:DATABASE_URL)%'
+        default_connection:           default
+        connections:
+            # A collection of different named connections (e.g. default, conn2, etc)
+            default:
+                url: '%env(resolve:DATABASE_URL)%'
 
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)
         #server_version: '15'
 
-        profiling_collect_backtrace: '%kernel.debug%'
-        types:
-            uuid_binary: Symfony\Bridge\Doctrine\Types\UuidType
-        mapping_types:
-            uuid_binary: binary
+                profiling_collect_backtrace: '%kernel.debug%'
+                use_savepoints: true
+
+
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
@@ -23,7 +26,7 @@ doctrine:
                 type: xml
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/App/User/Infrastructure/Database/ORM'
-                prefix: 'App\User\Domain\Entity'
+                prefix: 'App\User'
                 alias: App
 
 #when@test:
