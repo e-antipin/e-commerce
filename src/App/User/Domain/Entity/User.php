@@ -36,9 +36,9 @@ class User
         return $user;
     }
 
-    public function getUuid(): Uuid
+    public function getUuid(): string
     {
-        return $this->uuid;
+        return $this->uuid->toRfc4122();
     }
 
     public function getEmail(): Email

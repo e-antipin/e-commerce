@@ -23,7 +23,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         $this->_em->flush();
     }
 
-    public function findByUuid(Uuid $uuid): ?User
+    public function findByUuid(string $uuid): ?User
     {
         return $this->find($uuid);
     }
