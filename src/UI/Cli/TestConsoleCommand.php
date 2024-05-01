@@ -6,7 +6,7 @@ namespace UI\Cli;
 
 use App\Shared\Domain\ValueObject\Uuid;
 use App\Shared\Infrastructure\Bus\Command\CommandBus;
-use App\User\Application\Command\SignUp\SignUpCommand;
+use App\User\Application\UseCase\Command\SignUp\SignUpCommand;
 use App\User\Infrastructure\Repository\UserRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

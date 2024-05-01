@@ -4,7 +4,7 @@ namespace Tests\App\User\Application\Command\SignUp;
 
 use App\Shared\Application\Command\CommandBusInterface;
 use App\Shared\Domain\ValueObject\Uuid;
-use App\User\Application\Command\SignUp\SignUpCommand;
+use App\User\Application\UseCase\Command\SignUp\SignUpCommand;
 use App\User\Domain\Repository\UserRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

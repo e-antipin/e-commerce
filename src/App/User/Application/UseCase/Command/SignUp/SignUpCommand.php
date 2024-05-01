@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\User\Application\Command\SignUp;
+namespace App\User\Application\UseCase\Command\SignUp;
 
 use App\Shared\Application\Command\CommandInterface;
 use App\Shared\Domain\ValueObject\Uuid;
