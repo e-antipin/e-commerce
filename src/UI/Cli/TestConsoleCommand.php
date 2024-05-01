@@ -25,6 +25,9 @@ final class TestConsoleCommand extends Command
         parent::__construct();
     }
 
+    /**
+     * @throws \Throwable
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $uuid = Uuid::new();
