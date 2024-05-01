@@ -1,0 +1,39 @@
+<?php
+
+namespace Tests\App\Brand\Domain\ValueObject;
+
+use App\Brand\Domain\Exception\BrandSlugException;
+use App\Brand\Domain\ValueObject\BrandSlug;
+use PHPUnit\Framework\TestCase;
+
+class BrandSlugTest  extends TestCase
+{
+    final public const BAD_URL = 'Не верный юрл';
+    final public const GOOD_SLUG = "Ne-verny-i-yurl";
+
+    /**
+     * @test
+     *
+     * @group unit
+     *
+     * @throws BrandSlugException
+     */
+    public function given_a_bad_formatted_string_it_should_throw_an_exception_when_we_try_to_create_brand_slug(): void
+    {
+        $this->expectException(BrandSlugException::class);
+        new BrandSlug(self::BAD_URL);
+    }
+
+    /**
+     * @test
+     *
+     * @group unit
+     *
+     */
+    public function given_a_good_formatted_string_when_we_try_to_create_brand_slug(): void
+    {
+        $slug = BrandSlug::convert(self::BAD_URL);
+
+        $this->assertEquals($slug->value(), self::GOOD_SLUG);
+    }
+}

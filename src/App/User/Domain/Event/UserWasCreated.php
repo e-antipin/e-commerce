@@ -12,7 +12,7 @@ final class UserWasCreated extends DomainEvent
     {
     }
 
-    public function getUuid(): string
+    public function uuid(): string
     {
         return $this->uuid;
     }

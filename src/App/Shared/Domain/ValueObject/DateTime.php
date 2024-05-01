@@ -18,7 +18,7 @@ final class DateTime extends \DateTimeImmutable
         try {
             return new self($dateTime);
         } catch (\Throwable $e) {
-            throw new DateTimeException(new \Exception($e->getMessage(), (int) $e->getCode(), $e));
+            throw new DateTimeException(new \Exception($e->getMessage()));
         }
     }
 
