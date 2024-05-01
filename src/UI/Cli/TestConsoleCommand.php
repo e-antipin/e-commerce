@@ -33,9 +33,9 @@ final class TestConsoleCommand extends Command
         // act
         $this->commandBus->execute($command);
 
-        $user = $this->users->findByUuid($uuid->value());
+        $user = $this->users->findByUuid($uuid);
 
-        if (!empty($user)) {
+        if ($user !== null) {
             $output->writeln($user->uuid());
         }
 
