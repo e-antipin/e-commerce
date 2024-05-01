@@ -1,0 +1,157 @@
+services:
+  nginx:
+    build: bin/nginx
+    container_name: ${PROJECT_NAME}_nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ${DOCUMENT_ROOT-./www}:/var/www/html
+      - ./logs/nginx:/var/log/nginx
+      - ./config/nginx/conf.d:/etc/nginx/conf.d
+    links:
+      - php
+    depends_on:
+      - php
+    networks:
+      - main_network
+  php:
+    build:
+      #context: bin/php
+      context: ./../
+      dockerfile: ./docker/bin/php/Dockerfile
+      args:
+        uname: ${UNAME-php}
+        uid: ${UID-1000}
+        gid: ${GID-1000}
+    container_name: ${PROJECT_NAME}_php
+    volumes:
+      - ${DOCUMENT_ROOT-./www}:/var/www/html
+      - ./config/php/php.ini:/usr/local/etc/php/php.ini
+      - composer:/var/www/.composer/cache
+    links:
+      - mysql
+      - postgres
+      - elasticsearch
+      - rabbitmq
+      - redis
+    depends_on:
+      - postgres
+      - mailer
+      - rabbitmq
+      - redis
+    environment:
+      COMPOSER_MEMORY_LIMIT: -1
+      XDEBUG_CONFIG: client_host=${XDEBUG_REMOTE_HOST} client_port=${XDEBUG_STORM_PORT} remote_enable=1
+      PHP_IDE_CONFIG: serverName=${XDEBUG_STORM_SERVER_NAME}
+    networks:
+      - main_network
+  mysql:
+    build: bin/mysql
+    container_name: ${PROJECT_NAME}_mysql
+    restart: 'always'
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      - ./logs/mysql:/var/log/mysql
+      - ./config/mysql/conf.d:/etc/mysql/conf.d
+    command: --default-authentication-plugin=mysql_native_password --innodb-use-native-aio=0 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - main_network
+  mailer:
+      image: mailhog/mailhog
+      container_name: ${PROJECT_NAME}_mailer
+      ports:
+          - "8082:8025"
+          - "1025:1025"
+      networks:
+        - main_network
+  elasticsearch:
+    build: bin/elasticsearch
+    container_name: ${PROJECT_NAME}_es
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - cluster.routing.allocation.disk.threshold_enabled=true
+      - cluster.routing.allocation.disk.watermark.low=2gb
+      - cluster.routing.allocation.disk.watermark.high=1gb
+      - cluster.routing.allocation.disk.watermark.flood_stage=512mb
+      - bootstrap.memory_lock=false
+      - xpack.security.enabled=false
+      - xpack.security.http.ssl.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./data/elasticsearch:/usr/share/elasticsearch/data
+      - ./logs/elasticsearch:/usr/share/elasticsearch/logs
+    ports:
+      - "9200:9200"
+    networks:
+      - main_network
+  redis:
+    image: redis:latest
+    container_name: ${PROJECT_NAME}_redis
+    ports:
+      - "127.0.0.1:6379:6379"
+    networks:
+      - main_network
+  postgres:
+    build: bin/pgsql
+    container_name: ${PROJECT_NAME}_postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - ./data/postgresql/latest:/var/lib/postgresql/data
+    networks:
+      - main_network
+  centrifugo:
+    image: centrifugo/centrifugo:v2.2
+    container_name: ${PROJECT_NAME}_centrifugo
+    ulimits:
+        nofile:
+            soft: 65536
+            hard: 65536
+    environment:
+        CENTRIFUGO_SECRET: secret
+        CENTRIFUGO_API_KEY: secret
+    volumes:
+        - ./data/centrifugo:/centrifugo
+    ports:
+        - "8083:8000"
+    command: centrifugo --admin --admin_insecure
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: ${PROJECT_NAME}_rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - "15672:15672"
+    volumes:
+      - ./data/rmq:/var/lib/rabbitmq
+volumes:
+  composer:
+networks:
+  main_network:
+    driver: bridge
+    name: ${PROJECT_NAME}_main_network
+    ipam:
+      driver: default
+      config:
+        - subnet: ${SUBNET_IP}/${SUBNET_MASK}
