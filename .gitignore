@@ -29,6 +29,6 @@
 ###< qossmic/deptrac-shim ###
 
 ###> phpstan/phpstan ###
-phpstan.neon
+#phpstan.neon
 ###< phpstan/phpstan ###
 /src/App/Shared/Infrastructure/Persistence/Doctrine/Migrations/
