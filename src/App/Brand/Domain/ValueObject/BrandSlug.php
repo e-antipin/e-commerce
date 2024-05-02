@@ -10,6 +10,7 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 
 final class BrandSlug extends StringValue
 {
+    const SLUG_SEPARATOR = '-';
     /**
      * @throws BrandSlugException
      */
@@ -22,9 +23,24 @@ final class BrandSlug extends StringValue
     public static function convert(string $value): StringValue
     {
         $slugger = new AsciiSlugger();
-        $slug = $slugger->slug($value);
+        $slug = $slugger->slug($value)->lower();
 
         return new self((string)$slug);
+    }
+
+    public function next()
+    {
+        $slug = $this->value();
+        $position = strrpos( $slug,self::SLUG_SEPARATOR);
+        $i = 1;
+
+        if ($position !== false) {
+
+            if ( ($suffix = (int)substr($slug, $position + 1)) > 0 )
+                $slug = substr($slug,0,$position);
+            $i = $suffix + 1;
+        }
+        $this->value = $slug . self::SLUG_SEPARATOR . $i;
     }
 
     /**

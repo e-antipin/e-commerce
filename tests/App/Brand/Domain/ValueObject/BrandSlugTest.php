@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 class BrandSlugTest  extends TestCase
 {
     final public const BAD_URL = 'Не верный юрл';
-    final public const GOOD_SLUG = "Ne-verny-i-yurl";
+    final public const GOOD_SLUG = "ne-verny-i-yurl";
 
     /**
      * @test
@@ -35,5 +35,22 @@ class BrandSlugTest  extends TestCase
         $slug = BrandSlug::convert(self::BAD_URL);
 
         $this->assertEquals($slug->value(), self::GOOD_SLUG);
+    }
+
+    /**
+     * @test
+     *
+     * @group unit
+     *
+     */
+    public function given_a_good_formatted_string_when_we_try_to_create_next_brand_slug(): void
+    {
+        $slug = BrandSlug::convert(self::BAD_URL);
+        $slug->next();
+        $this->assertEquals($slug->value(), self::GOOD_SLUG. '-1');
+
+        $slug = BrandSlug::convert(self::BAD_URL . '-2');
+        $slug->next();
+        $this->assertEquals($slug->value(), self::GOOD_SLUG. '-3');
     }
 }
