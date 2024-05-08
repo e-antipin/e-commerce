@@ -30,6 +30,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/App/User/Infrastructure/Database/ORM'
                 prefix: 'App\User'
                 alias: User
+            Brand:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.project_dir%/src/App/Shop/Brand/Infrastructure/Database/ORM'
+                prefix: 'App\Shop\Brand'
+                alias: Brand
 #            App:
 #                type: attribute
 #                is_bundle: false
