@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Brand\Domain\Repository;
+namespace App\Shop\Brand\Domain\Repository;
 
 interface BrandRepositoryInterface
 {

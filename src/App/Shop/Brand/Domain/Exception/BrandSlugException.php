@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Brand\Domain\Exception;
+namespace App\Shop\Brand\Domain\Exception;
 
 class BrandSlugException extends \InvalidArgumentException
 {

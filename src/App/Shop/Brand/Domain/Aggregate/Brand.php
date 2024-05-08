@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Brand\Domain\Aggregate;
+namespace App\Shop\Brand\Domain\Aggregate;
 
-use App\Brand\Domain\Specification\UniqueNameSpecificationInterface;
-use App\Brand\Domain\Specification\UniqueSlugSpecificationInterface;
-use App\Brand\Domain\ValueObject\BrandDescription;
-use App\Brand\Domain\ValueObject\BrandName;
-use App\Brand\Domain\ValueObject\BrandSlug;
 use App\Shared\Domain\Aggregate\AggregateRoot;
 use App\Shared\Domain\ValueObject\Uuid;
+use App\Shop\Brand\Domain\Specification\UniqueNameSpecificationInterface;
+use App\Shop\Brand\Domain\Specification\UniqueSlugSpecificationInterface;
+use App\Shop\Brand\Domain\ValueObject\BrandDescription;
+use App\Shop\Brand\Domain\ValueObject\BrandName;
+use App\Shop\Brand\Domain\ValueObject\BrandSlug;
 
 class Brand extends AggregateRoot
 {

@@ -2,8 +2,8 @@
 
 namespace Tests\App\Brand\Domain\ValueObject;
 
-use App\Brand\Domain\Exception\BrandSlugException;
-use App\Brand\Domain\ValueObject\BrandSlug;
+use App\Shop\Brand\Domain\Exception\BrandSlugException;
+use App\Shop\Brand\Domain\ValueObject\BrandSlug;
 use PHPUnit\Framework\TestCase;
 
 class BrandSlugTest  extends TestCase

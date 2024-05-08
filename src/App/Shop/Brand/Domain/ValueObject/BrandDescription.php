@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Brand\Domain\ValueObject;
+namespace App\Shop\Brand\Domain\ValueObject;
 
 use App\Shared\Domain\ValueObject\StringValue;
 

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Brand\Domain\ValueObject;
+namespace App\Shop\Brand\Domain\ValueObject;
 
-use App\Brand\Domain\Exception\BrandSlugException;
 use App\Shared\Domain\ValueObject\StringValue;
+use App\Shop\Brand\Domain\Exception\BrandSlugException;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
 final class BrandSlug extends StringValue

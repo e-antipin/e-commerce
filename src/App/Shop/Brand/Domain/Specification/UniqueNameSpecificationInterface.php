@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Brand\Domain\Specification;
+namespace App\Shop\Brand\Domain\Specification;
 
-use App\Brand\Domain\ValueObject\BrandName;
+use App\Shop\Brand\Domain\ValueObject\BrandName;
 
 interface UniqueNameSpecificationInterface
 {
