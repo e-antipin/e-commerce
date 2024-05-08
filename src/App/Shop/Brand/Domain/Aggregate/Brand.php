@@ -3,7 +3,10 @@
 namespace App\Shop\Brand\Domain\Aggregate;
 
 use App\Shared\Domain\Aggregate\AggregateRoot;
+use App\Shared\Domain\Exception\DateTimeException;
+use App\Shared\Domain\ValueObject\DateTime;
 use App\Shared\Domain\ValueObject\Uuid;
+use App\Shop\Brand\Domain\Service\BrandSlugGeneratorInterface;
 use App\Shop\Brand\Domain\Specification\UniqueNameSpecificationInterface;
 use App\Shop\Brand\Domain\Specification\UniqueSlugSpecificationInterface;
 use App\Shop\Brand\Domain\ValueObject\BrandDescription;
@@ -20,6 +23,11 @@ class Brand extends AggregateRoot
 
     private BrandSlug $slug;
 
+    private DateTime $createdAt;
+
+    private ?DateTime $updatedAt = null;
+
+
     private function __construct(Uuid $uuid, BrandName $name, BrandDescription $description, BrandSlug $slug){
         $this->uuid = $uuid;
         $this->name = $name;
@@ -27,19 +35,25 @@ class Brand extends AggregateRoot
         $this->slug = $slug;
     }
 
+    /**
+     * @throws DateTimeException
+     */
     public static function create(
         Uuid $uuid,
         BrandName $name,
         BrandDescription $description,
-        BrandSlug $slug,
-        UniqueSlugSpecificationInterface $uniqueSlugSpecification,
+        BrandSlugGeneratorInterface $slugGenerator,
         UniqueNameSpecificationInterface $uniqueNameSpecification,
     ): self
     {
         $uniqueNameSpecification->isUnique($name);
-        $uniqueSlugSpecification->isUnique($slug);
+        $slug = $slugGenerator->slugify($name);
 
-        return new self($uuid, $name, $description, $slug);
+        $brand = new self($uuid, $name, $description, $slug);
+        $brand->createdAt = DateTime::now();
+        $brand->updatedAt = DateTime::now();
+
+        return $brand;
     }
 
     public function uuid(): string
